@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  user
+}
+
+model User {
+  user_id       Int         @id @default(autoincrement()) @map("user_id")
+  first_name    String
+  last_name     String
+  picture       String
+  email         String
+  password      String
+  phone_number  String
+  hire_date     DateTime
+  job_title     String
+  role          UserRole
+  department_id Int
+  department    Departments @relation(fields: [department_id], references: [department_id])
+
+  payroll          Payroll[]
+  documents        Documents[]
+  documentRequests DocumentRequests[]
+
+  @@map("User")
+}
+
+model Departments {
+  department_id   Int    @id @default(autoincrement())
+  department_name String
+  user            User[]
+}
+
+model Payroll {
+  payroll_id       Int      @id @default(autoincrement())
+  user_id          Int
+  pay_period_start DateTime
+  pay_period_end   DateTime
+  basic_salary     Float
+  bonuses          Float
+  deductions       Float
+  user             User     @relation(fields: [user_id], references: [user_id])
+}
+
+model Documents {
+  document_id   Int    @id @default(autoincrement())
+  user_id       Int
+  document_name String
+  document_file String
+  user          User   @relation(fields: [user_id], references: [user_id])
+}
+
+model DocumentRequests {
+  request_id      Int      @id @default(autoincrement())
+  user_id         Int
+  admin_id        Int
+  request_date    DateTime
+  request_message String
+  status          String
+  user            User     @relation(fields: [user_id], references: [user_id])
+}
