@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {AiFillEdit} from 'react-icons/ai'
 import useUsers from "../hooks/useUsers";
 
 const ListUser = () => {
@@ -8,7 +9,7 @@ const ListUser = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredUsers = data?.filter((user) =>
-    user.first_name.toLowerCase().includes(searchQuery.toLowerCase())
+    user.last_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -31,8 +32,13 @@ const ListUser = () => {
       <table className="w-full">
         <thead>
           <tr className="bg-gray-200">
-            <th className="py-2 px-4 text-left">Firsname</th>
-            <th className="py-2 px-4 text-left">Lastname</th>
+            <th className="py-2 px-4 text-left">Last name</th>
+            <th className="py-2 px-4 text-left">First name</th>
+            <th className="py-2 px-4 text-left">Email</th>
+            <th className="py-2 px-4 text-left">Phone number</th>
+            <th className="py-2 px-4 text-left">Hire date</th>
+            <th className="py-2 px-4 text-left">Job title</th>
+            <th className="py-2 px-4 text-left"></th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +46,16 @@ const ListUser = () => {
             <tr key={user.user_id} className="border-b border-gray-300">
               <td className="py-2 px-4">{user.last_name}</td>
               <td className="py-2 px-4">{user.first_name}</td>
+              <td className="py-2 px-4">{user.email}</td>
+              <td className="py-2 px-4">{user.phone_number}</td>
+              <td className="py-2 px-4">{user.hire_date}</td>
+              <td className="py-2 px-4">{user.job_title}</td>
+              <td className="py-2 px-4">
+              <AiFillEdit
+                  className="text-blue-500 cursor-pointer"
+                  onClick={() => {}}
+                />
+              </td>
             </tr>
           ))}
         </tbody>
