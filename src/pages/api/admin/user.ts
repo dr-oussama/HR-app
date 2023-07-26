@@ -14,7 +14,41 @@ export default async function handler(
     } catch (error) {
       return res.status(500).json({ error: "Error fetching users" });
     }
+  } else if (req.method === "POST") {
+    try {
+      const {
+        first_name,
+        last_name,
+        picture,
+        email,
+        password,
+        phone_number,
+        hire_date,
+        job_title,
+        departement_id,
+      } = req.body;
+      const date = new Date(hire_date);
+
+      const newUser = await prisma.user.create({
+        data: {
+          first_name,
+          last_name,
+          picture,
+          email,
+          password,
+          phone_number,
+          hire_date: date,
+          job_title,
+          role: "user",
+          department_id: parseInt(departement_id),
+        },
+      });
+
+      return res.status(201).json(newUser);
+    } catch (error) {
+      return res.status(500).json({ error: "Error here adding user" });
+    }
   }
-  
+
   return res.status(405).end();
 }

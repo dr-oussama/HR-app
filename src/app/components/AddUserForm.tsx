@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import Avatar from "./Avatar";
-import { User } from "../hooks/useUsers";
 import EditAvatar from "./EditAvatar";
 import useDepartements from "../hooks/useDepartements";
+import { User } from "@/services/user-service";
+import { addUser } from "../hooks/useUsers";
 
 interface AddUserFormProps {
   onClose: () => void;
@@ -15,20 +16,22 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
 
   const initialUserState: User = {
     user_id: 0,
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    phone_number: "",
-    hire_date: "",
-    job_title: "",
+    first_name: "test",
+    last_name: "test",
+    email: "test@test",
+    password: "test",
+    phone_number: "test",
+    hire_date: "5050-08-08",
+    job_title: "test",
     picture: "luffy5.jpg",
     departement_id: 0,
   };
 
   const [newUser, setNewUser] = useState<User>(initialUserState);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setNewUser((prevUser) => ({
       ...prevUser,
@@ -36,10 +39,15 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onAddUser(newUser);
-    setNewUser(initialUserState);
+    try {
+      await addUser(newUser);
+      console.log(newUser);
+      setNewUser(initialUserState);
+    } catch (error) {
+      console.error("Error adding user:");
+    }
   };
 
   const handleClear = () => {
@@ -50,8 +58,6 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-50">
       <div className="bg-white p-4 rounded shadow-md">
         <div className="flex flex-col items-center mb-4">
-          {/* Display the avatar for the user */}
-          {/* <Avatar size="large" url={newUser.picture} /> */}
           <EditAvatar url={newUser.picture} onAvatarChange={() => {}} />
           <h2 className="text-xl font-bold mt-2">Add New User</h2>
         </div>
@@ -166,6 +172,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
+              onClick={()=>onAddUser(newUser)}
             >
               Submit
             </button>

@@ -1,18 +1,39 @@
-import useData from "./useData";
+import { CanceledError } from "@/services/api-client";
+import userService, { User } from "@/services/user-service";
+import { useState, useEffect } from "react";
 
-export interface User {
-  user_id: number;
-  first_name: string;
-  last_name: string;
-  picture: string;
-  email: string;
-  password: string;
-  phone_number: string;
-  hire_date: string;
-  job_title: string;
-  departement_id: number;
-}
+const useUsers = () => {
+  const [error, setError] = useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [isLoading, setLoading] = useState(true);
 
-const useUsers = () => useData<User>("/admin/user");
+  useEffect(() => {
+    setLoading(true);
+    const { request, cancel } = userService.getAll<User>();
+    request
+      .then((res) => {
+        setUsers(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+        setLoading(false);
+      });
+
+    return () => cancel();
+  }, []);
+
+  return { users, error, isLoading, setUsers, setError };
+};
+
+export const addUser = async (newUser: User) => {
+  try {
+    const response = await userService.create<User>(newUser);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error adding user");
+  }
+};
 
 export default useUsers;

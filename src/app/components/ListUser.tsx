@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
-import useUsers from "../hooks/useUsers";
+import useUsers, { addUser } from "../hooks/useUsers";
 import AddUserForm from "./AddUserForm";
 
 const ListUser = () => {
-  const { data, isLoading, error } = useUsers();
+  const { users, isLoading, error } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddUserForm, setShowAddUserForm] = useState(false);
 
-  const filteredUsers = data?.filter((user) =>
+  const filteredUsers = users?.filter((user) =>
     user.last_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -63,11 +63,10 @@ const ListUser = () => {
           ))}
         </tbody>
       </table>
-      {/* Render the AddUserForm when showAddUserForm is true */}
       {showAddUserForm && (
         <AddUserForm
-          onClose={() => setShowAddUserForm(false)} // Close the form when the user clicks "Cancel" or submits
-          onAddUser={() => {}} // Pass your logic for adding the new user here
+          onClose={() => setShowAddUserForm(false)}
+          onAddUser={(user)=>{users.push(user)}} 
         />
       )}
     </div>
