@@ -7,7 +7,7 @@ import { useState } from "react";
 import DepartementList from "../components/DepartementList";
 
 const Dashboard = () => {
-  const [sidebar, setSidebar] = useState("departements");
+  const [sidebar, setSidebar] = useState("Users");
   return (
     <div className="flex h-screen">
       <Sidebar clicked={(title) => setSidebar(title)} />

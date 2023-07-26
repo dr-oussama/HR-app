@@ -23,21 +23,17 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     hire_date: "",
     job_title: "",
     picture: "luffy5.jpg",
+    departement_id: 0,
   };
 
   const [newUser, setNewUser] = useState<User>(initialUserState);
-  const [deptId, setDeptId] = useState(0);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (name === "department") {
-      setDeptId(parseInt(value)); 
-    } else {
-      setNewUser((prevUser) => ({
-        ...prevUser,
-        [name]: value,
-      }));
-    }
+    setNewUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -139,11 +135,11 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
               />
             </div>
             <div>
-              <label htmlFor="department">Department:</label>
+              <label htmlFor="departement">Department:</label>
               <select
-                id="department"
-                name="department"
-                value={deptId}
+                id="departement"
+                name="departement_id"
+                value={newUser.departement_id}
                 onChange={handleChange}
                 className="border border-gray-300 px-2 py-1 rounded w-full"
               >
