@@ -3,6 +3,7 @@ import { AiFillEdit } from "react-icons/ai";
 import Avatar from "./Avatar";
 import { User } from "../hooks/useUsers";
 import EditAvatar from "./EditAvatar";
+import useDepartements from "../hooks/useDepartements";
 
 interface AddUserFormProps {
   onClose: () => void;
@@ -10,6 +11,8 @@ interface AddUserFormProps {
 }
 
 const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
+  const { data, isLoading, error } = useDepartements();
+
   const initialUserState: User = {
     user_id: 0,
     first_name: "",
@@ -23,13 +26,18 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
   };
 
   const [newUser, setNewUser] = useState<User>(initialUserState);
+  const [deptId, setDeptId] = useState(0);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setNewUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
+    if (name === "department") {
+      setDeptId(parseInt(value)); 
+    } else {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,15 +50,13 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     onClose();
   };
 
-  
-
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-700 bg-opacity-50">
       <div className="bg-white p-4 rounded shadow-md">
         <div className="flex flex-col items-center mb-4">
           {/* Display the avatar for the user */}
           {/* <Avatar size="large" url={newUser.picture} /> */}
-          <EditAvatar url={newUser.picture} onAvatarChange={()=>{}} />
+          <EditAvatar url={newUser.picture} onAvatarChange={() => {}} />
           <h2 className="text-xl font-bold mt-2">Add New User</h2>
         </div>
         <form onSubmit={handleSubmit}>
@@ -113,7 +119,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
             <div>
               <label htmlFor="hire_date">Hire Date:</label>
               <input
-                type="text"
+                type="date"
                 id="hire_date"
                 name="hire_date"
                 value={newUser.hire_date}
@@ -131,6 +137,33 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
                 onChange={handleChange}
                 className="border border-gray-300 px-2 py-1 rounded w-full"
               />
+            </div>
+            <div>
+              <label htmlFor="department">Department:</label>
+              <select
+                id="department"
+                name="department"
+                value={deptId}
+                onChange={handleChange}
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              >
+                <option value="">Select a department</option>
+                {/* Render department options from the fetched data */}
+                {isLoading ? (
+                  <option>Loading departments...</option>
+                ) : error ? (
+                  <option>Error fetching departments</option>
+                ) : (
+                  data.map((department) => (
+                    <option
+                      key={department.department_id}
+                      value={department.department_id}
+                    >
+                      {department.department_name}
+                    </option>
+                  ))
+                )}
+              </select>
             </div>
           </div>
           <div className="flex justify-center mt-6">
