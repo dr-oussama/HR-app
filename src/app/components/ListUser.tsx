@@ -1,18 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useUsers from "../hooks/useUsers";
 
 const ListUser = () => {
-  const users = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-    { id: 3, name: "Bob Johnson" },
-  ];
-
+  const { data, isLoading, error } = useUsers();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = data?.filter((user) =>
+    user.first_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -35,15 +31,15 @@ const ListUser = () => {
       <table className="w-full">
         <thead>
           <tr className="bg-gray-200">
-            <th className="py-2 px-4 text-left">ID</th>
-            <th className="py-2 px-4 text-left">Name</th>
+            <th className="py-2 px-4 text-left">Firsname</th>
+            <th className="py-2 px-4 text-left">Lastname</th>
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user.id} className="border-b border-gray-300">
-              <td className="py-2 px-4">{user.id}</td>
-              <td className="py-2 px-4">{user.name}</td>
+          {filteredUsers?.map((user) => (
+            <tr key={user.user_id} className="border-b border-gray-300">
+              <td className="py-2 px-4">{user.last_name}</td>
+              <td className="py-2 px-4">{user.first_name}</td>
             </tr>
           ))}
         </tbody>

@@ -1,5 +1,5 @@
 const Header = () => {
-  // Replace these with the actual admin's name and avatar URL
+  
   const adminName = "John Doe";
   const adminAvatarUrl = "";
 
