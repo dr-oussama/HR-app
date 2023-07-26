@@ -8,11 +8,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const users = await prisma.user.findMany();
+    const departements = await prisma.departments.findMany();
     try {
-      return res.status(200).json(users);
+      return res.status(200).json(departements);
     } catch (error) {
-      return res.status(500).json({ error: "Error fetching users" });
+      return res.status(500).json({ error: "Error fetching departements" });
     }
   }
   

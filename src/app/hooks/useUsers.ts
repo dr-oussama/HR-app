@@ -13,6 +13,6 @@ export interface User {
     job_title: string;
   }
 
-const useUsers = () => useData("/admin/user");
+const useUsers = () => useData<User>("/admin/user");
 
 export default useUsers;

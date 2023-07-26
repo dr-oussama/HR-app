@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import { AxiosRequestConfig, CanceledError } from "axios";
 import apiClient from "../../services/api-client";
-import { User } from "./useUsers";
 
-interface FetchResponse<T> {
-  results: T[];
-}
-
-const useData = (
+const useData = <T>(
   endpoint: string,
   requestConfig?: AxiosRequestConfig,
   deps?: any[]
 ) => {
-  const [data, setData] = useState<User[]>([]);
+  const [data, setData] = useState<T[]>([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,7 +16,7 @@ const useData = (
 
     setIsLoading(true);
     apiClient
-      .get<User[]>(endpoint, {
+      .get<T[]>(endpoint, {
         signal: controller.signal,
         ...requestConfig,
       })
