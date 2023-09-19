@@ -16,6 +16,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
 
   const initialUserState: User = {
     user_id: 0,
+    cin: "HH15485",
     first_name: "test",
     last_name: "test",
     email: "test@test",
@@ -23,6 +24,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     phone_number: "test",
     hire_date: "5050-08-08",
     job_title: "test",
+    basic_salary: 15000,
     picture: "luffy5.jpg",
     departement_id: 0,
   };
@@ -63,6 +65,17 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="cin">CIN:</label>
+              <input
+                type="text"
+                id="cin"
+                name="cin"
+                value={newUser.cin}
+                onChange={handleChange}
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              />
+            </div>
             <div>
               <label htmlFor="first_name">First Name:</label>
               <input
@@ -125,6 +138,17 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
                 id="hire_date"
                 name="hire_date"
                 value={newUser.hire_date}
+                onChange={handleChange}
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              />
+            </div>
+            <div>
+              <label htmlFor="basic_salary">Basic Salary:</label>
+              <input
+                type="text"
+                id="basic_salary"
+                name="basic_salary"
+                value={newUser.basic_salary}
                 onChange={handleChange}
                 className="border border-gray-300 px-2 py-1 rounded w-full"
               />
