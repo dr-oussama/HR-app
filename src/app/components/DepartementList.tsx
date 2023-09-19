@@ -32,6 +32,9 @@ const ListUser = () => {
           Add Departement
         </button>
       </div>
+      {isLoading ? (
+        <p className="text-center py-4">Loading...</p>
+      ) : (
       <table className="w-full">
         <thead>
           <tr className="bg-gray-200">
@@ -55,6 +58,7 @@ const ListUser = () => {
           ))}
         </tbody>
       </table>
+      )}
       {/* Render the AddUserForm when showAddUserForm is true */}
       {showAddUserForm && (
         <AddUserForm

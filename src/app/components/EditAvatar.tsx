@@ -26,7 +26,6 @@ const EditAvatar = ({ url, onAvatarChange }: EditAvatarProps) => {
           type="file"
           id="avatar"
           name="avatar"
-          accept="image/*"
           className="hidden"
           onChange={handleFileChange}
         />

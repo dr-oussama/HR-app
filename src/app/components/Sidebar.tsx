@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react";
 
 interface Props {
@@ -6,7 +7,13 @@ interface Props {
 
 const Sidebar = ({ clicked }: Props) => {
   const [navTitle, setNavTitle] = useState("Users");
-  const titles = ["Users", "Departements", "Settings", "Logout"];
+  const titles = [
+    "Users",
+    "Departements",
+    "Document requests",
+    "Settings",
+    "Logout",
+  ];
   return (
     <>
       <aside className="bg-gray-800 text-white p-4">
@@ -15,23 +22,44 @@ const Sidebar = ({ clicked }: Props) => {
             <li className="mb-2">
               <h2 className="text-xl font-bold">Dashboard</h2>
             </li>
-            {titles.map((title) => (
-              <li
-                key={title}
-                className={title == navTitle ? "mb-4 rounded bg-gray-700":"mb-4"}
-                onClick={() => {
-                  setNavTitle(title);
-                  clicked(title);
-                }}
-              >
-                <a
-                  href="#"
-                  className="block px-2 py-1 rounded hover:bg-gray-700"
+            {titles.map((title) =>
+              title !== "Logout" ? (
+                <li
+                  key={title}
+                  className={
+                    title == navTitle ? "mb-4 rounded bg-gray-700" : "mb-4"
+                  }
+                  onClick={() => {
+                    setNavTitle(title);
+                    clicked(title);
+                  }}
                 >
-                  {title}
-                </a>
-              </li>
-            ))}
+                  <a
+                    className="block px-2 py-1 rounded hover:bg-gray-700"
+                  >
+                    {title}
+                  </a>
+                </li>
+              ) : (
+                <li
+                  key={title}
+                  className={
+                    title == navTitle ? "mb-4 rounded bg-gray-700" : "mb-4"
+                  }
+                  onClick={() => {
+                    setNavTitle(title);
+                    clicked(title);
+                  }}
+                >
+                  <Link
+                    href={'../'}
+                    className="block px-2 py-1 rounded hover:bg-gray-700"
+                  >
+                    {title}
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </nav>
       </aside>
