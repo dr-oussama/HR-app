@@ -8,14 +8,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "POST") {
-    const { email, password } = req.body;
+    const { cin, password } = req.body;
 
     try {
       // Find the user with the given email
-      const user = await prisma.user.findFirst({ where: { email } });
+      const user = await prisma.user.findFirst({ where: { cin } });
 
       if (!user) {
-        return res.status(401).json({ error: "Email is incorrect" });
+        return res.status(401).json({ error: "CIN is incorrect" });
       }
 
       // Compare the password with the hashed password in the user data

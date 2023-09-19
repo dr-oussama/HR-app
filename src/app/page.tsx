@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [cin, setCin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null); // State variable for error message
 
@@ -15,7 +15,7 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ cin: cin, password }),
       });
 
       if (response.ok) {
@@ -41,17 +41,17 @@ const LoginPage = () => {
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-medium">
-              Email
+            <label htmlFor="cin" className="block text-gray-700 font-medium">
+              CIN
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="cin"
+              id="cin"
+              name="cin"
+              value={cin}
+              onChange={(e) => setCin(e.target.value)}
               className="mt-2 px-4 py-3 w-full border rounded-lg focus:outline-none focus:border-indigo-500 transition duration-300"
-              placeholder="Enter your email"
+              placeholder="Enter your CIN"
             />
           </div>
           <div className="mb-6">
