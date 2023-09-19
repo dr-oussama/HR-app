@@ -17,6 +17,7 @@ export default async function handler(
   } else if (req.method === "POST") {
     try {
       const {
+        cin,
         first_name,
         last_name,
         picture,
@@ -25,12 +26,14 @@ export default async function handler(
         phone_number,
         hire_date,
         job_title,
+        basic_salary,
         departement_id,
       } = req.body;
       const date = new Date(hire_date);
 
       const newUser = await prisma.user.create({
         data: {
+          cin,
           first_name,
           last_name,
           picture,
@@ -39,6 +42,7 @@ export default async function handler(
           phone_number,
           hire_date: date,
           job_title,
+          basic_salary,
           role: "user",
           department_id: parseInt(departement_id),
         },
