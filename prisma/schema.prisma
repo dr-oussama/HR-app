@@ -14,6 +14,7 @@ enum UserRole {
 
 model User {
   user_id       Int         @id @default(autoincrement()) @map("user_id")
+  cin           String
   first_name    String
   last_name     String
   picture       String
@@ -22,6 +23,7 @@ model User {
   phone_number  String
   hire_date     DateTime
   job_title     String
+  basic_salary  Float
   role          UserRole
   department_id Int
   department    Departments @relation(fields: [department_id], references: [department_id])
@@ -44,7 +46,6 @@ model Payroll {
   user_id          Int
   pay_period_start DateTime
   pay_period_end   DateTime
-  basic_salary     Float
   bonuses          Float
   deductions       Float
   user             User     @relation(fields: [user_id], references: [user_id])
