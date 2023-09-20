@@ -22,7 +22,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     email: "test@test",
     password: "test",
     phone_number: "test",
-    hire_date: "5050-08-08",
+    hire_date: Date.now().toString(),
     job_title: "test",
     basic_salary: 15000,
     picture: "luffy5.jpg",

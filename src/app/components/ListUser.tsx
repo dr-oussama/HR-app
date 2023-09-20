@@ -15,7 +15,7 @@ const ListUser = () => {
   };
 
   const filteredUsers = users?.filter((user) =>
-    user.last_name.toLowerCase().includes(searchQuery.toLowerCase())
+    user.cin.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -28,7 +28,7 @@ const ListUser = () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search users..."
+          placeholder="Search users by cin..."
           className="w-35percent flex-1 px-4 py-2 border border-gray-300 rounded"
         />
         <button
@@ -44,6 +44,7 @@ const ListUser = () => {
         <table className="w-full">
           <thead>
             <tr className="bg-gray-200">
+              <th className="py-2 px-4 text-left">CIN</th>
               <th className="py-2 px-4 text-left">Last name</th>
               <th className="py-2 px-4 text-left">First name</th>
               <th className="py-2 px-4 text-left">Email</th>
@@ -56,6 +57,7 @@ const ListUser = () => {
           <tbody>
             {filteredUsers?.map((user) => (
               <tr key={user.user_id} className="border-b border-gray-300">
+                <td className="py-2 px-4">{user.cin.toLocaleUpperCase()}</td>
                 <td className="py-2 px-4">{user.last_name}</td>
                 <td className="py-2 px-4">{user.first_name}</td>
                 <td className="py-2 px-4">{user.email}</td>
