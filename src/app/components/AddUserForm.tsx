@@ -26,7 +26,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     job_title: "test",
     basic_salary: 15000,
     picture: "luffy5.jpg",
-    departement_id: 0,
+    department_id: 0,
   };
 
   const [newUser, setNewUser] = useState<User>(initialUserState);
@@ -169,7 +169,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
               <select
                 id="departement"
                 name="departement_id"
-                value={newUser.departement_id}
+                value={newUser.department_id}
                 onChange={handleChange}
                 className="border border-gray-300 px-2 py-1 rounded w-full"
               >

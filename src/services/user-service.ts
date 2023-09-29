@@ -12,7 +12,7 @@ export interface User {
   hire_date: string;
   job_title: string;
   basic_salary: number;
-  departement_id: number;
+  department_id: number;
 }
 
 export default create('/admin/user');

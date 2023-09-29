@@ -26,7 +26,7 @@ const useUsers = () => {
 
   return { users, error, isLoading, setUsers, setError };
 };
-export const getOne = (id:number) => {
+export const getOne = (id: number) => {
   const [error, setError] = useState("");
   const [users, setUsers] = useState<User>();
   const [isLoading, setLoading] = useState(true);
@@ -57,6 +57,16 @@ export const addUser = async (newUser: User) => {
     return response.data;
   } catch (error) {
     throw new Error("Error adding user");
+  }
+};
+
+export const updateUser = async (newUser: User) => {
+  try {
+    console.log(newUser.user_id);
+    const response = await userService.update<User>(newUser, newUser.user_id);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error updating user");
   }
 };
 

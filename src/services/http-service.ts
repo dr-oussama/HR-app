@@ -1,7 +1,6 @@
 import apiClient from "./api-client";
 
 interface Entity {
-  id: number;
 }
 
 class HttpService {
@@ -36,8 +35,8 @@ class HttpService {
     return apiClient.post(this.endpoint, entity);
   }
 
-  update<T extends Entity>(entity: T) {
-    return apiClient.patch(this.endpoint + "/" + entity.id, entity);
+  update<T extends Entity>(entity: T, id: number) {
+    return apiClient.patch(this.endpoint + "/" + id, entity);
   }
 }
 

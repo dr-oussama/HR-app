@@ -7,7 +7,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const userId = req.query.id; 
+  const userId = req.query.id;
 
   if (req.method === "GET") {
     try {
@@ -22,6 +22,43 @@ export default async function handler(
       return res.status(200).json(user);
     } catch (error) {
       return res.status(500).json({ error: "Error fetching user" });
+    }
+  } else if (req.method === "PATCH") {
+    try {
+      const {
+        cin,
+        first_name,
+        last_name,
+        picture,
+        email,
+        password,
+        phone_number,
+        hire_date,
+        job_title,
+        basic_salary,
+        department_id,
+      } = req.body;
+      const date = new Date(hire_date);
+      const updatedUser = await prisma.user.update({
+        where: { user_id: Number(userId) },
+        data: {
+          cin,
+          first_name,
+          last_name,
+          picture,
+          email,
+          password,
+          phone_number,
+          hire_date: date,
+          job_title,
+          basic_salary: parseFloat(basic_salary),
+          department_id: parseInt(department_id),
+        },
+      });
+      console.log("khdam");
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      return res.status(500).json({ error: "Error updating user" });
     }
   }
 
