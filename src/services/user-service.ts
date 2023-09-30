@@ -1,4 +1,5 @@
 import create from "./http-service";
+import { Payroll } from "./payroll-service";
 
 export interface User {
   user_id: number;
@@ -13,6 +14,7 @@ export interface User {
   job_title: string;
   basic_salary: number;
   department_id: number;
+  payroll: Payroll[];
 }
 
-export default create('/admin/user');
+export default create("/admin/user");

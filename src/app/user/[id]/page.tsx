@@ -6,6 +6,8 @@ import { getOne, updateUser } from "../../hooks/useUsers";
 import Avatar from "../../components/Avatar";
 import { User } from "@/services/user-service";
 import useDepartements from "@/app/hooks/useDepartements";
+import { Payroll } from "@/services/payroll-service";
+import { AiFillEdit } from "react-icons/ai";
 
 interface UpdateUserFormProps {
   onClose: () => void;
@@ -18,6 +20,7 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
   if (!router) return null;
   const id = router["id"];
   const { users, isLoading } = getOne(Number(id));
+  const [payrolls, setPayrolls] = useState<Payroll[] | null>();
   const [newUser, setNewUser] = useState<User>({
     user_id: 0,
     cin: "",
@@ -31,11 +34,14 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
     basic_salary: 0,
     picture: "",
     department_id: 0,
+    payroll: [],
   });
 
   useEffect(() => {
     if (users) {
       setNewUser(users);
+      console.log(users.payroll);
+      setPayrolls(users.payroll);
     } else {
       console.error("Failed to fetch user data");
     }
@@ -228,7 +234,36 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
 
         <div className="bg-white rounded-lg shadow-lg mt-8 p-6">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Payrolls</h3>
-          {/* Add payroll information here */}
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="py-2 px-4 text-left">Period start</th>
+                <th className="py-2 px-4 text-left">Period end</th>
+                <th className="py-2 px-4 text-left">Bonuses</th>
+                <th className="py-2 px-4 text-left">Deductions</th>
+                <th className="py-2 px-4 text-left"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {payrolls?.map((payroll) => (
+                <tr
+                  key={payroll.payroll_id}
+                  className="border-b border-gray-300"
+                >
+                  <td className="py-2 px-4">{payroll.pay_period_start.toString().split("T")[0]}</td>
+                  <td className="py-2 px-4">{payroll.pay_period_end.toString().split("T")[0]}</td>
+                  <td className="py-2 px-4">{payroll.bonuses}</td>
+                  <td className="py-2 px-4">{payroll.deductions}</td>
+                  <td className="py-2 px-4">
+                    <AiFillEdit
+                      className="text-blue-500 cursor-pointer"
+                      onClick={() => {}}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </>

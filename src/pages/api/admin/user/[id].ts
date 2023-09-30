@@ -13,7 +13,11 @@ export default async function handler(
     try {
       const user = await prisma.user.findUnique({
         where: { user_id: Number(userId) },
+        include: {
+          payroll: true,
+        },
       });
+      console.log(user);
 
       if (!user) {
         return res.status(404).json({ error: "User not found" });

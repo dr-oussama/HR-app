@@ -27,6 +27,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
     basic_salary: 15000,
     picture: "luffy5.jpg",
     department_id: 0,
+    payroll: [],
   };
 
   const [newUser, setNewUser] = useState<User>(initialUserState);
@@ -196,7 +197,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={()=>onAddUser(newUser)}
+              onClick={() => onAddUser(newUser)}
             >
               Submit
             </button>
