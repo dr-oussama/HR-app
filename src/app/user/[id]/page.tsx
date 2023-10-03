@@ -8,6 +8,7 @@ import { User } from "@/services/user-service";
 import useDepartements from "@/app/hooks/useDepartements";
 import { Payroll } from "@/services/payroll-service";
 import { AiFillEdit } from "react-icons/ai";
+import AddPayrollForm from "@/app/components/AddPayrollForm";
 
 interface UpdateUserFormProps {
   onClose: () => void;
@@ -19,6 +20,7 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
   const router = useParams();
   if (!router) return null;
   const id = router["id"];
+  const [showAddPayrollForm, setShowAddPayrollForm] = useState(false);
   const { users, isLoading } = getOne(Number(id));
   const [payrolls, setPayrolls] = useState<Payroll[] | null>();
   const [newUser, setNewUser] = useState<User>({
@@ -234,6 +236,12 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
 
         <div className="bg-white rounded-lg shadow-lg mt-8 p-6">
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Payrolls</h3>
+          <button
+            onClick={() => setShowAddPayrollForm(true)}
+            className="bg-blue-500 text-white px-4 py-2 ml-4 rounded"
+          >
+            Add Payroll
+          </button>
           <table className="w-full">
             <thead>
               <tr className="bg-gray-200">
@@ -250,8 +258,12 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
                   key={payroll.payroll_id}
                   className="border-b border-gray-300"
                 >
-                  <td className="py-2 px-4">{payroll.pay_period_start.toString().split("T")[0]}</td>
-                  <td className="py-2 px-4">{payroll.pay_period_end.toString().split("T")[0]}</td>
+                  <td className="py-2 px-4">
+                    {payroll.pay_period_start.toString().split("T")[0]}
+                  </td>
+                  <td className="py-2 px-4">
+                    {payroll.pay_period_end.toString().split("T")[0]}
+                  </td>
                   <td className="py-2 px-4">{payroll.bonuses}</td>
                   <td className="py-2 px-4">{payroll.deductions}</td>
                   <td className="py-2 px-4">
@@ -265,6 +277,15 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
             </tbody>
           </table>
         </div>
+        {showAddPayrollForm && (
+        <AddPayrollForm
+        user_id={Number(id)}
+          onClose={() => setShowAddPayrollForm(false)}
+          onAddPayroll={(payroll) => {
+            payrolls?.push(payroll);
+          }}
+        />
+      )}
       </div>
     </>
   );

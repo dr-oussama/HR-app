@@ -9,4 +9,4 @@ export interface Payroll {
   deductions: number;
 }
 
-export default create("/admin/user");
+export default create("/payrolls");
