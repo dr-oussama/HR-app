@@ -1,26 +1,21 @@
 import { useState } from "react";
 import { Payroll } from "@/services/payroll-service";
-import { addPayroll } from "../hooks/usePayrolls";
+import { updatePayroll } from "../hooks/usePayrolls";
 
-interface AddPayrollFormProps {
+interface UpdatePayrollFormProps {
+  payroll: Payroll;
   user_id: number;
   onClose: () => void;
-  onAddPayroll: (newPayroll: Payroll) => void;
+  onUpdatePayroll: (newPayroll: Payroll) => void;
 }
 
-const AddUserForm = ({
+const UpdatePayrollForm = ({
+  payroll,
   user_id,
   onClose,
-  onAddPayroll,
-}: AddPayrollFormProps) => {
-  const initialPayrollState: Payroll = {
-    payroll_id: 0,
-    user_id: user_id,
-    pay_period_start: "",
-    pay_period_end: "",
-    bonuses: 0,
-    deductions: 0,
-  };
+  onUpdatePayroll,
+}: UpdatePayrollFormProps) => {
+  const initialPayrollState = payroll;
 
   const [newPayroll, setNewPayroll] = useState<Payroll>(initialPayrollState);
 
@@ -37,11 +32,11 @@ const AddUserForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await addPayroll(newPayroll);
+      await updatePayroll(newPayroll);
       console.log(newPayroll);
       setNewPayroll(initialPayrollState);
     } catch (error) {
-      console.error("Error adding payroll:");
+      console.error("Error updating payroll:");
     }
   };
 
@@ -103,7 +98,7 @@ const AddUserForm = ({
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
-              onClick={() => onAddPayroll(newPayroll)}
+              onClick={() => onUpdatePayroll(newPayroll)}
             >
               Submit
             </button>
@@ -121,4 +116,4 @@ const AddUserForm = ({
   );
 };
 
-export default AddUserForm;
+export default UpdatePayrollForm;

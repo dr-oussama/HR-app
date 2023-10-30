@@ -24,7 +24,13 @@ const useUsers = () => {
     return () => cancel();
   }, []);
 
-  return { payrolls: payrolls, error, isLoading, setPayrolls: setPayrolls, setError };
+  return {
+    payrolls: payrolls,
+    error,
+    isLoading,
+    setPayrolls: setPayrolls,
+    setError,
+  };
 };
 export const getOne = (id: number) => {
   const [error, setError] = useState("");
@@ -60,10 +66,13 @@ export const addPayroll = async (payroll: Payroll) => {
   }
 };
 
-export const updateUser = async (newUser: Payroll) => {
+export const updatePayroll = async (payroll: Payroll) => {
   try {
-    console.log(newUser.user_id);
-    const response = await userService.update<Payroll>(newUser, newUser.user_id);
+    console.log(payroll);
+    const response = await userService.update<Payroll>(
+      payroll,
+      payroll.user_id
+    );
     return response.data;
   } catch (error) {
     throw new Error("Error updating user");

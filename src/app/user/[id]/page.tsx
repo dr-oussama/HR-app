@@ -9,6 +9,7 @@ import useDepartements from "@/app/hooks/useDepartements";
 import { Payroll } from "@/services/payroll-service";
 import { AiFillEdit } from "react-icons/ai";
 import AddPayrollForm from "@/app/components/AddPayrollForm";
+import UpdatePayrollForm from "@/app/components/UpdatePayrollForm";
 
 interface UpdateUserFormProps {
   onClose: () => void;
@@ -21,6 +22,15 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
   if (!router) return null;
   const id = router["id"];
   const [showAddPayrollForm, setShowAddPayrollForm] = useState(false);
+  const [showUpdatePayrollForm, setShowUpdatePayrollForm] = useState(false);
+  const [payroll, setPayroll] = useState<Payroll>({
+    payroll_id: 0,
+    user_id: 0,
+    pay_period_start: "",
+    pay_period_end: "",
+    bonuses: 0,
+    deductions: 0,
+  });
   const { users, isLoading } = getOne(Number(id));
   const [payrolls, setPayrolls] = useState<Payroll[] | null>();
   const [newUser, setNewUser] = useState<User>({
@@ -269,7 +279,10 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
                   <td className="py-2 px-4">
                     <AiFillEdit
                       className="text-blue-500 cursor-pointer"
-                      onClick={() => {}}
+                      onClick={() => {
+                        setPayroll(payroll);
+                        setShowUpdatePayrollForm(true);
+                      }}
                     />
                   </td>
                 </tr>
@@ -278,14 +291,29 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
           </table>
         </div>
         {showAddPayrollForm && (
-        <AddPayrollForm
-        user_id={Number(id)}
-          onClose={() => setShowAddPayrollForm(false)}
-          onAddPayroll={(payroll) => {
-            payrolls?.push(payroll);
-          }}
-        />
-      )}
+          <AddPayrollForm
+            user_id={Number(id)}
+            onClose={() => setShowAddPayrollForm(false)}
+            onAddPayroll={(payroll) => {
+              payrolls?.push(payroll);
+            }}
+          />
+        )}
+        {showUpdatePayrollForm && (
+          <UpdatePayrollForm
+            payroll={payroll}
+            user_id={Number(id)}
+            onClose={() => setShowUpdatePayrollForm(false)}
+            onUpdatePayroll={(payroll) => {
+              if (payrolls) {
+                const index = payrolls.findIndex(
+                  (p) => p.payroll_id == payroll.payroll_id
+                );
+                payrolls[index] = payroll;
+              }
+            }}
+          />
+        )}
       </div>
     </>
   );
