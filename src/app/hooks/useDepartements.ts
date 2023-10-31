@@ -1,10 +1,36 @@
-import useData from "./useData";
+import { CanceledError } from "@/services/api-client";
+import userService, { Department } from "@/services/departement-service";
+import { useState, useEffect } from "react";
 
-export interface Departement {
-  department_id: number;
-  department_name: string;
-}
+const useDepartements = () => {
+  const [error, setError] = useState("");
+  const [departements, setDepartements] = useState<Department[]>([]);
+  const [isLoading, setLoading] = useState(true);
 
-const useDepartements = () => useData<Departement>("/admin/departement");
+  useEffect(() => {
+    setLoading(true);
+    const { request, cancel } = userService.getAll<Department>();
+    request
+      .then((res) => {
+        setDepartements(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+        setLoading(false);
+      });
+
+    return () => cancel();
+  }, []);
+
+  return {
+    departements,
+    error,
+    isLoading,
+    setDepartements,
+    setError,
+  };
+};
 
 export default useDepartements;

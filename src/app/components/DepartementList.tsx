@@ -4,11 +4,11 @@ import AddUserForm from "./AddUserForm";
 import useDepartements from "../hooks/useDepartements";
 
 const ListUser = () => {
-  const { data, isLoading, error } = useDepartements();
+  const { departements, isLoading, error } = useDepartements();
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddUserForm, setShowAddUserForm] = useState(false);
 
-  const filteredUsers = data?.filter((departement) =>
+  const filteredUsers = departements?.filter((departement) =>
     departement.department_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
