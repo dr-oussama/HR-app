@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import AddUserForm from "./AddUserForm";
 import useDepartements from "../hooks/useDepartements";
+import AddDepartementForm from "./AddDepartementForm";
 
 const ListUser = () => {
   const { departements, isLoading, error } = useDepartements();
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAddUserForm, setShowAddUserForm] = useState(false);
+  const [showAddDeptForm, setShowAddDeptForm] = useState(false);
 
   const filteredUsers = departements?.filter((departement) =>
     departement.department_name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -26,7 +27,7 @@ const ListUser = () => {
           className="w-35percent flex-1 px-4 py-2 border border-gray-300 rounded"
         />
         <button
-          onClick={() => setShowAddUserForm(true)}
+          onClick={() => setShowAddDeptForm(true)}
           className="bg-blue-500 text-white px-4 py-2 ml-4 rounded"
         >
           Add Departement
@@ -59,11 +60,12 @@ const ListUser = () => {
         </tbody>
       </table>
       )}
-      {/* Render the AddUserForm when showAddUserForm is true */}
-      {showAddUserForm && (
-        <AddUserForm
-          onClose={() => setShowAddUserForm(false)} // Close the form when the user clicks "Cancel" or submits
-          onAddUser={() => {}} // Pass your logic for adding the new user here
+      {showAddDeptForm && (
+        <AddDepartementForm
+          onClose={() => setShowAddDeptForm(false)}
+          onAddDept={(dept) => {
+            departements.push(dept);
+          }}
         />
       )}
     </div>

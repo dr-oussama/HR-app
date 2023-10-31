@@ -33,4 +33,13 @@ const useDepartements = () => {
   };
 };
 
+export const addDepartement = async (payroll: Department) => {
+  try {
+    const response = await userService.create<Department>(payroll);
+    return response.data;
+  } catch (error) {
+    throw new Error("Error adding payroll");
+  }
+};
+
 export default useDepartements;

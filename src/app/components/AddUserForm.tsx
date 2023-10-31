@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { AiFillEdit } from "react-icons/ai";
-import Avatar from "./Avatar";
 import EditAvatar from "./EditAvatar";
 import useDepartements from "../hooks/useDepartements";
 import { User } from "@/services/user-service";
@@ -12,7 +10,7 @@ interface AddUserFormProps {
 }
 
 const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
-  const { data, isLoading, error } = useDepartements();
+  const { departements, isLoading, error } = useDepartements();
 
   const initialUserState: User = {
     user_id: 0,
@@ -181,7 +179,7 @@ const AddUserForm = ({ onClose, onAddUser }: AddUserFormProps) => {
                 ) : error ? (
                   <option>Error fetching departments</option>
                 ) : (
-                  data.map((department) => (
+                  departements.map((department) => (
                     <option
                       key={department.department_id}
                       value={department.department_id}

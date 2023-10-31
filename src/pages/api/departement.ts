@@ -16,18 +16,11 @@ export default async function handler(
     }
   } else if (req.method === "POST") {
     try {
-      const { user_id, pay_period_start, pay_period_end, bonuses, deductions } =
-        req.body;
-      const date_start = new Date(pay_period_start);
-      const date_end = new Date(pay_period_end);
+      const { department_name } = req.body;
 
-      const newPayroll = await prisma.payroll.create({
+      const newPayroll = await prisma.departments.create({
         data: {
-          user_id,
-          pay_period_start: date_start,
-          pay_period_end: date_end,
-          bonuses: Number(bonuses),
-          deductions: Number(deductions),
+          department_name,
         },
       });
 
@@ -37,8 +30,13 @@ export default async function handler(
     }
   } else if (req.method === "PATCH") {
     try {
-      const { payroll_id, pay_period_start, pay_period_end, bonuses, deductions } =
-        req.body;
+      const {
+        payroll_id,
+        pay_period_start,
+        pay_period_end,
+        bonuses,
+        deductions,
+      } = req.body;
       const date_start = new Date(pay_period_start);
       const date_end = new Date(pay_period_end);
 
