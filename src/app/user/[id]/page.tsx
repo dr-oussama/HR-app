@@ -17,7 +17,7 @@ interface UpdateUserFormProps {
 }
 
 const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
-  const { data, error } = useDepartements();
+  const { departements, error } = useDepartements();
   const router = useParams();
   if (!router) return null;
   const id = router["id"];
@@ -204,7 +204,7 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
                 >
                   <option value={newUser.department_id}>
                     {
-                      data.find(
+                      departements.find(
                         (dept) => dept.department_id == newUser.department_id
                       )?.department_name
                     }
@@ -215,7 +215,7 @@ const UserProfilePage = ({ onClose, onUpdateUser }: UpdateUserFormProps) => {
                   ) : error ? (
                     <option>Error fetching departments</option>
                   ) : (
-                    data.map((department) => (
+                    departements.map((department) => (
                       <option
                         key={department.department_id}
                         value={department.department_id}

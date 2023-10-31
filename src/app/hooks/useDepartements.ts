@@ -33,12 +33,25 @@ const useDepartements = () => {
   };
 };
 
-export const addDepartement = async (payroll: Department) => {
+export const addDepartement = async (departement: Department) => {
   try {
-    const response = await userService.create<Department>(payroll);
+    const response = await userService.create<Department>(departement);
     return response.data;
   } catch (error) {
     throw new Error("Error adding payroll");
+  }
+};
+
+export const updateDepartement = async (departement: Department) => {
+  try {
+    console.log(departement);
+    const response = await userService.update<Department>(
+      departement,
+      departement.department_id
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error("Error updating user");
   }
 };
 
