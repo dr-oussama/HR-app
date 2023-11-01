@@ -16,7 +16,9 @@ export default async function handler(
     try {
       return res.status(200).json(documentRequests);
     } catch (error) {
-      return res.status(500).json({ error: "Error fetching document requests" });
+      return res
+        .status(500)
+        .json({ error: "Error fetching document requests" });
     }
   } else if (req.method === "POST") {
     try {
@@ -25,6 +27,23 @@ export default async function handler(
       const newPayroll = await prisma.departments.create({
         data: {
           department_name,
+        },
+      });
+
+      return res.status(201).json(newPayroll);
+    } catch (error) {
+      return res.status(500).json({ error: "Error here adding payroll" });
+    }
+  } else if (req.method === "PATCH") {
+    try {
+      const { status, request_id } = req.body;
+
+      const newPayroll = await prisma.documentRequests.update({
+        data: {
+          status,
+        },
+        where: {
+          request_id,
         },
       });
 

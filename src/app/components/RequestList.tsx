@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiOutlineUpload, AiOutlineCloseCircle } from "react-icons/ai";
-import useRequests from "../hooks/useRequests";
+import useRequests, { updateRequest } from "../hooks/useRequests";
 import { DocumentRequest } from "@/services/documentRequest-service";
 
 const RequestList = () => {
@@ -15,19 +15,17 @@ const RequestList = () => {
     setRequestsData(requests);
   }, [requests]);
 
-  const updateStatus = (requestId: number, newStatus: string) => {
-    // Create a new array with the updated status
+  const updateStatus = async (request: DocumentRequest, newStatus: string) => {
     const updatedRequestsData = requestsData?.map((request) => {
-      if (request.request_id === requestId) {
+      if (request.request_id === request.request_id) {
         return { ...request, status: newStatus };
       }
       return request;
     });
-
-    // Update the state with the new array
+    await updateRequest({ ...request, status: newStatus });
     setRequestsData(updatedRequestsData);
   };
-  
+
   const filteredUsers = requestsData?.filter((user) =>
     user.user.cin.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -101,14 +99,16 @@ const RequestList = () => {
                   <button className="py-1 px-1 m-2">
                     <AiOutlineUpload className="text-blue-500 cursor-pointer text-xl" />
                   </button>
-                  <button
-                    onClick={() => {
-                        updateStatus(request.request_id, "REJECTED");
-                    }}
-                    className="py-1 px-1 m-2"
-                  >
-                    <AiOutlineCloseCircle className="text-blue-500 cursor-pointer text-xl" />
-                  </button>
+                  {request.status !== "REJECTED" && (
+                    <button
+                      onClick={() => {
+                        updateStatus(request, "REJECTED");
+                      }}
+                      className="py-1 px-1 m-2"
+                    >
+                      <AiOutlineCloseCircle className="text-blue-500 cursor-pointer text-xl" />
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
