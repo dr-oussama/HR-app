@@ -32,7 +32,6 @@ const Sidebar = ({ clicked }: Props) => {
                   onClick={() => {
                     setNavTitle(title);
                     clicked(title);
-                    console.log(title);
                   }}
                 >
                   <a
