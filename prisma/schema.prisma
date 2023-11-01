@@ -59,12 +59,19 @@ model Documents {
   user          User   @relation(fields: [user_id], references: [user_id])
 }
 
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELED
+}
+
 model DocumentRequests {
   request_id      Int      @id @default(autoincrement())
   user_id         Int
   admin_id        Int
   request_date    DateTime
   request_message String
-  status          String
+  status          Status
   user            User     @relation(fields: [user_id], references: [user_id])
 }
