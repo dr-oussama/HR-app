@@ -69,7 +69,6 @@ enum Status {
 model DocumentRequests {
   request_id      Int      @id @default(autoincrement())
   user_id         Int
-  admin_id        Int
   request_date    DateTime
   request_message String
   status          Status

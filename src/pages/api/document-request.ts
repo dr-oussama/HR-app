@@ -8,11 +8,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const departements = await prisma.departments.findMany();
+    const documentRequests = await prisma.documentRequests.findMany({
+      include: {
+        user: true,
+      },
+    });
     try {
-      return res.status(200).json(departements);
+      return res.status(200).json(documentRequests);
     } catch (error) {
-      return res.status(500).json({ error: "Error fetching users" });
+      return res.status(500).json({ error: "Error fetching document requests" });
     }
   } else if (req.method === "POST") {
     try {
@@ -28,6 +32,6 @@ export default async function handler(
     } catch (error) {
       return res.status(500).json({ error: "Error here adding payroll" });
     }
-  } 
+  }
   return res.status(405).end();
 }
