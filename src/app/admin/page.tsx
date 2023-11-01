@@ -5,6 +5,7 @@ import Sidebar from "../components/Sidebar";
 import ListUser from "../components/ListUser";
 import { useState } from "react";
 import DepartementList from "../components/DepartementList";
+import RequestList from "../components/RequestList";
 
 const Dashboard = () => {
   const [sidebar, setSidebar] = useState("Users");
@@ -15,8 +16,10 @@ const Dashboard = () => {
         <Header />
         {sidebar === "Users" ? (
           <ListUser />
-        ) : "Departements" ? (
+        ) : sidebar === "Departements" ? ( 
           <DepartementList />
+        ) : sidebar === "Document requests" ? ( 
+          <RequestList />
         ) : null}
       </div>
     </div>
