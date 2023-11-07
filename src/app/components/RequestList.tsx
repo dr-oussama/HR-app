@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineUpload, AiOutlineCloseCircle } from "react-icons/ai";
 import useRequests, { updateRequest } from "../hooks/useRequests";
 import { DocumentRequest } from "@/services/documentRequest-service";
+import Link from "next/link";
 
 const RequestList = () => {
   const { requests, isLoading, error } = useRequests();
@@ -96,8 +97,8 @@ const RequestList = () => {
                   </div>
                 </td>
                 <td className="py-2 px-2">
-                  <button className="py-1 px-1 m-2">
-                    <AiOutlineUpload className="text-blue-500 cursor-pointer text-xl" />
+                  <button className="py-1 px-1 m-2"><Link href="test/">
+                    <AiOutlineUpload className="text-blue-500 cursor-pointer text-xl" /></Link>
                   </button>
                   {request.status !== "REJECTED" && (
                     <button
@@ -106,7 +107,9 @@ const RequestList = () => {
                       }}
                       className="py-1 px-1 m-2"
                     >
-                      <AiOutlineCloseCircle className="text-blue-500 cursor-pointer text-xl" />
+                      
+                        <AiOutlineCloseCircle className="text-blue-500 cursor-pointer text-xl" />
+                      
                     </button>
                   )}
                 </td>
