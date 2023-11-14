@@ -2,13 +2,35 @@ import { useEffect, useState } from "react";
 import { AiOutlineUpload, AiOutlineCloseCircle } from "react-icons/ai";
 import useRequests, { updateRequest } from "../hooks/useRequests";
 import { DocumentRequest } from "@/services/documentRequest-service";
-import Link from "next/link";
+import UploadFileForm from "./UploadFileForm";
 
 const RequestList = () => {
   const { requests, isLoading, error } = useRequests();
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAddUserForm, setShowAddUserForm] = useState(false);
+  const [showAddDocForm, setShowDocUserForm] = useState(false);
   const [requestsData, setRequestsData] = useState<DocumentRequest[]>();
+  const [request, setRequest] = useState<DocumentRequest>({
+    user_id: 0,
+    request_id: 0,
+    request_date: new Date(),
+    request_message: "",
+    status: "some_status",
+    user: {
+      user_id: 0,
+      cin: "",
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      phone_number: "",
+      hire_date: Date.now().toString(),
+      job_title: "",
+      basic_salary: 15000,
+      picture: "",
+      department_id: 0,
+      payroll: [],
+    },
+  });
 
   useEffect(() => {
     // console.log("requests: "+requests);
@@ -16,14 +38,18 @@ const RequestList = () => {
     setRequestsData(requests);
   }, [requests]);
 
-  const updateStatus = async (request: DocumentRequest, newStatus: string) => {
+  const updateStatus = async (
+    requestDoc: DocumentRequest,
+    newStatus: string
+  ) => {
     const updatedRequestsData = requestsData?.map((request) => {
-      if (request.request_id === request.request_id) {
+      if (request.request_id === requestDoc.request_id) {
         return { ...request, status: newStatus };
       }
       return request;
     });
-    await updateRequest({ ...request, status: newStatus });
+    //console.log(request);
+    await updateRequest({ ...requestDoc, status: newStatus });
     setRequestsData(updatedRequestsData);
   };
 
@@ -76,50 +102,69 @@ const RequestList = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers?.map((request) => (
-              <tr key={request.request_id} className="border-b border-gray-300">
+            {filteredUsers?.map((requestDoc) => (
+              <tr
+                key={requestDoc.request_id}
+                className="border-b border-gray-300"
+              >
                 <td className="py-2 px-4">
-                  {request.user.cin.toLocaleUpperCase()}
+                  {requestDoc.user.cin.toLocaleUpperCase()}
                 </td>
-                <td className="py-2 px-4">{request.user.last_name}</td>
-                <td className="py-2 px-4">{request.user.first_name}</td>
+                <td className="py-2 px-4">{requestDoc.user.last_name}</td>
+                <td className="py-2 px-4">{requestDoc.user.first_name}</td>
                 <td className="py-2 px-4">
-                  {request.request_date.toString().split("T")[0]}
+                  {requestDoc.request_date.toString().split("T")[0]}
                 </td>
-                <td className="py-2 px-4">{request.request_message}</td>
+                <td className="py-2 px-4">{requestDoc.request_message}</td>
                 <td>
                   <div
                     className={`py-2 px-4 ${getStatusColor(
-                      request.status
+                      requestDoc.status
                     )} m-2 w-24 text-white p-2 rounded-lg text-center`}
                   >
-                    {request.status.toLocaleLowerCase()}
+                    {requestDoc.status.toLocaleLowerCase()}
                   </div>
                 </td>
-                <td className="py-2 px-2">
-                  <button className="py-1 px-1 m-2"><Link href="test/">
-                    <AiOutlineUpload className="text-blue-500 cursor-pointer text-xl" /></Link>
-                  </button>
-                  {request.status !== "REJECTED" && (
+                {requestDoc.status === "PENDING" && (
+                  <td className="py-2 px-2">
                     <button
                       onClick={() => {
-                        updateStatus(request, "REJECTED");
+                        setRequest(requestDoc);
+                        setShowDocUserForm(true);
                       }}
                       className="py-1 px-1 m-2"
                     >
-                      
-                        <AiOutlineCloseCircle className="text-blue-500 cursor-pointer text-xl" />
-                      
+                      <AiOutlineUpload className="text-blue-500 cursor-pointer text-xl" />
                     </button>
-                  )}
-                </td>
+
+                    <button
+                      onClick={() => {
+                        //console.log(requestDoc);
+                        updateStatus(requestDoc, "REJECTED");
+                      }}
+                      className="py-1 px-1 m-2"
+                    >
+                      <AiOutlineCloseCircle className="text-blue-500 cursor-pointer text-xl" />
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </table>
       )}
 
-      {showAddUserForm}
+      {showAddDocForm && (
+        <UploadFileForm
+          user_id={request.user_id}
+          onAddDoc={() => {
+            updateStatus(request, "APPROVED");
+          }}
+          onClose={() => {
+            setShowDocUserForm(false);
+          }}
+        />
+      )}
     </div>
   );
 };

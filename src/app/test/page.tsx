@@ -32,12 +32,14 @@ const Test = () => {
     const body = (await response.json()) as {
       status: "ok" | "fail";
       message: string;
+      file_path: string;
     };
 
-    alert(body.message);
+    alert(body.file_path);
 
     if (body.status === "ok") {
       inputFileRef.current.value = "";
+      console.log(body.file_path);
       // Do some stuff on successfully upload
     } else {
       // Do some stuff on error

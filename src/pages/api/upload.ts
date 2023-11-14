@@ -18,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let resultBody = {
     status: "ok",
     message: "Files were uploaded successfully",
+    file_path: "",
   };
 
   /* Get files using formidable */
@@ -38,6 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     resultBody = {
       status: "fail",
       message: "Upload error",
+      file_path: "",
     };
   });
 
@@ -53,7 +55,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     /* Move uploaded files to directory */
     for (const file of files) {
       const tempPath = file[1].filepath;
-      await fs.rename(tempPath, targetPath + Date.now() + '.' + file[1].originalFilename?.split('.')[1]);
+      const destinPath =
+        targetPath +
+        Date.now() +
+        "." +
+        file[1].originalFilename?.split(".")[
+          file[1].originalFilename?.split(".").length - 1
+        ];
+      await fs.rename(tempPath, destinPath);
+      resultBody.file_path = destinPath.split("public\\")[1];
     }
   }
 
