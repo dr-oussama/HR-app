@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 
 const LoginPage = () => {
@@ -10,18 +10,18 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/auth", {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ cin: cin, password }),
+        body: JSON.stringify({ cin, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
         const user = data.user;
-        localStorage.setItem("user", JSON.stringify(user));
+        console.log("test");
         if (user["role"] === "admin") window.location.href = "/admin";
         else window.location.href = "/employee";
       } else {
