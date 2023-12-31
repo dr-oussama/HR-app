@@ -5,7 +5,7 @@ import { NextApiResponse } from "next";
 const TOKEN_SECRET = "your_secret_key";
 
 export const createToken = (data: Record<string, any>) => {
-  return sign(data, TOKEN_SECRET, { expiresIn: "1h" });
+  return sign(data, TOKEN_SECRET, { expiresIn: "7d" });
 };
 
 export const verifyToken = (token: string) => {

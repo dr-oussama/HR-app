@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { AiOutlineUpload, AiOutlineCloseCircle } from "react-icons/ai";
-import useRequests, { updateRequest } from "../hooks/useRequests";
+import { getRequestsById, updateRequest } from "../hooks/useRequests";
 import { DocumentRequest } from "@/services/documentRequest-service";
 import UploadFileForm from "./UploadFileForm";
+import AddRequestForm from "./AddRequestForm";
 
 const RequestList = () => {
-  const { requests, isLoading, error } = useRequests();
+  const { requests, isLoading, error } = getRequestsById(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAddDocForm, setShowDocUserForm] = useState(false);
+  const [showAddReqForm, setShowReqUserForm] = useState(false);
   const [requestsData, setRequestsData] = useState<DocumentRequest[]>();
   const currentDate = new Date();
   const [request, setRequest] = useState<DocumentRequest>({
@@ -34,8 +35,6 @@ const RequestList = () => {
   });
 
   useEffect(() => {
-    // console.log("requests: "+requests);
-    // console.log("requestsData: "+requestsData);
     setRequestsData(requests);
   }, [requests]);
 
@@ -49,6 +48,7 @@ const RequestList = () => {
       }
       return request;
     });
+    //console.log(request);
     await updateRequest({ ...requestDoc, status: newStatus });
     setRequestsData(updatedRequestsData);
   };
@@ -85,6 +85,14 @@ const RequestList = () => {
           placeholder="Search users by cin..."
           className="w-35percent flex-1 px-4 py-2 border border-gray-300 rounded"
         />
+        <button
+          onClick={() => {
+            setShowReqUserForm(true);
+          }}
+          className="bg-blue-500 text-white px-4 py-2 ml-4 rounded"
+        >
+          Request a document
+        </button>
       </div>
       {isLoading ? (
         <p className="text-center py-4">Loading...</p>
@@ -92,9 +100,6 @@ const RequestList = () => {
         <table className="w-full">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-4 text-left">CIN</th>
-              <th className="py-2 px-4 text-left">Last name</th>
-              <th className="py-2 px-4 text-left">First name</th>
               <th className="py-2 px-4 text-left">Date</th>
               <th className="py-2 px-4 text-left">Message</th>
               <th className="py-2 px-4 text-left">Status</th>
@@ -107,11 +112,6 @@ const RequestList = () => {
                 key={requestDoc.request_id}
                 className="border-b border-gray-300"
               >
-                <td className="py-2 px-4">
-                  {requestDoc.user.cin.toLocaleUpperCase()}
-                </td>
-                <td className="py-2 px-4">{requestDoc.user.last_name}</td>
-                <td className="py-2 px-4">{requestDoc.user.first_name}</td>
                 <td className="py-2 px-4">
                   {requestDoc.request_date.toString().split("T")[0]}
                 </td>
@@ -130,7 +130,6 @@ const RequestList = () => {
                     <button
                       onClick={() => {
                         setRequest(requestDoc);
-                        setShowDocUserForm(true);
                       }}
                       className="py-1 px-1 m-2"
                     >
@@ -140,7 +139,7 @@ const RequestList = () => {
                     <button
                       onClick={() => {
                         //console.log(requestDoc);
-                        updateStatus(requestDoc, "REJECTED");
+                        updateStatus(requestDoc, "CANCELED");
                       }}
                       className="py-1 px-1 m-2"
                     >
@@ -154,14 +153,13 @@ const RequestList = () => {
         </table>
       )}
 
-      {showAddDocForm && (
-        <UploadFileForm
-          user_id={request.user_id}
-          onAddDoc={() => {
-            updateStatus(request, "APPROVED");
+      {showAddReqForm && (
+        <AddRequestForm
+          onAddRequest={(req) => {
+            requestsData?.push(req)
           }}
           onClose={() => {
-            setShowDocUserForm(false);
+            setShowReqUserForm(false);
           }}
         />
       )}

@@ -35,6 +35,37 @@ const useRequests = () => {
   };
 };
 
+export const getRequestsById = (id: number) => {
+  const [error, setError] = useState("");
+  const [requests, setRequests] = useState<DocumentRequest[]>([]);
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setLoading(true);
+    const { request, cancel } = userService.getById<DocumentRequest>(id);
+    request
+      .then((res) => {
+        setRequests(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err instanceof CanceledError) return;
+        setError(err.message);
+        setLoading(false);
+      });
+
+    return () => cancel();
+  }, []);
+
+  return {
+    requests,
+    error,
+    isLoading,
+    setRequests,
+    setError,
+  };
+};
+
 export const addRequest = async (request: DocumentRequest) => {
   try {
     const response = await userService.create<DocumentRequest>(request);

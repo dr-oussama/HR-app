@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import { parseCookies, verifyToken } from "@/app/utils/auth";
 
 const prisma = new PrismaClient();
 
@@ -7,6 +8,11 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const cookie = parseCookies(req);
+  const token = await verifyToken(cookie.authToken);
+  if (typeof token === "object" && "userId" in token) {
+    const { userId } = token;
+    console.log("userId: ", userId);
   if (req.method === "GET") {
     const documentRequests = await prisma.documentRequests.findMany({
       include: {
@@ -22,17 +28,20 @@ export default async function handler(
     }
   } else if (req.method === "POST") {
     try {
-      const { department_name } = req.body;
+      const { request_message } = req.body;
 
-      const newPayroll = await prisma.departments.create({
+      const newRequest = await prisma.documentRequests.create({
         data: {
-          department_name,
+          user_id:Number(userId),
+          request_message,
+          request_date:new Date(),
+          status:"PENDING"
         },
       });
 
-      return res.status(201).json(newPayroll);
+      return res.status(201).json(newRequest);
     } catch (error) {
-      return res.status(500).json({ error: "Error here adding payroll" });
+      return res.status(500).json({ error: "Error here adding request"+error });
     }
   } else if (req.method === "PATCH") {
     try {
@@ -52,5 +61,5 @@ export default async function handler(
       return res.status(500).json({ error: "Error here adding payroll" });
     }
   }
-  return res.status(405).end();
+  return res.status(405).end();}
 }
