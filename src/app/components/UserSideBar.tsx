@@ -6,7 +6,7 @@ interface Props {
 }
 
 const UserSidebar = ({ clicked }: Props) => {
-  const [navTitle, setNavTitle] = useState("Users");
+  const [navTitle, setNavTitle] = useState("Document requests");
 
   useEffect(() => {
     

@@ -53,8 +53,8 @@ const RequestList = () => {
     setRequestsData(updatedRequestsData);
   };
 
-  const filteredUsers = requestsData?.filter((user) =>
-    user.user.cin.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredUsers = requestsData?.filter((req) =>
+    req.request_message.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getStatusColor = (status: string) => {
@@ -82,7 +82,7 @@ const RequestList = () => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search users by cin..."
+          placeholder="Search requests by message..."
           className="w-35percent flex-1 px-4 py-2 border border-gray-300 rounded"
         />
         <button
@@ -127,15 +127,6 @@ const RequestList = () => {
                 </td>
                 {requestDoc.status === "PENDING" && (
                   <td className="py-2 px-2">
-                    <button
-                      onClick={() => {
-                        setRequest(requestDoc);
-                      }}
-                      className="py-1 px-1 m-2"
-                    >
-                      <AiOutlineUpload className="text-blue-500 cursor-pointer text-xl" />
-                    </button>
-
                     <button
                       onClick={() => {
                         //console.log(requestDoc);

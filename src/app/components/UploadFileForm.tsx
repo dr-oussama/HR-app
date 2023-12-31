@@ -22,9 +22,16 @@ const UploadFileForm = ({
 
   const [newDoc, setNewDoc] = useState<Document>(initialDocumentState);
   const inputFileRef = useRef<HTMLInputElement | null>(null);
+  const [initialRender, setInitialRender] = useState(true);
   useEffect(() => {
-    console.log("useEffect: " + newDoc.document_file);
-  }, [newDoc]);
+    if(initialRender) {
+      setInitialRender(false)
+    }
+    else {
+      console.log("useEffect: " + newDoc.document_file);
+      addDocument(newDoc);
+    }
+  }, [newDoc.document_file]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -59,11 +66,9 @@ const UploadFileForm = ({
         const body = await response.json();
 
         // Update newDoc with the new document file
-        
+
         // Call addDocument with the updated newDoc
-        
         await setNewDoc({ ...newDoc, document_file: body.file_path });
-        addDocument(newDoc);
       } else {
         console.error("Failed to upload the document.");
       }

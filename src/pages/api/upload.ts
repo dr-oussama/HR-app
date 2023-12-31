@@ -63,7 +63,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           file[1].originalFilename?.split(".").length - 1
         ];
       await fs.rename(tempPath, destinPath);
-      resultBody.file_path = destinPath.split("public\\")[1];
+      resultBody.file_path = await destinPath.split("uploads\\")[1];
+      console.log("result: ", resultBody);
     }
   }
 
