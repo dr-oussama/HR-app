@@ -5,7 +5,7 @@ interface Props {
   clicked: (name: string) => void;
 }
 
-const Sidebar = ({ clicked }: Props) => {
+const UserSidebar = ({ clicked }: Props) => {
   const [navTitle, setNavTitle] = useState("Users");
 
   useEffect(() => {
@@ -13,9 +13,9 @@ const Sidebar = ({ clicked }: Props) => {
   }, []);
 
   const titles = [
-    "Users",
-    "Departements",
     "Document requests",
+    "Documents",
+    "Payrolls",
     "Settings",
     "Logout",
   ];
@@ -88,4 +88,4 @@ const Sidebar = ({ clicked }: Props) => {
   );
 };
 
-export default Sidebar;
+export default UserSidebar;

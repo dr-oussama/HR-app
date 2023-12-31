@@ -32,10 +32,17 @@ export default async function handler(
     }
 
     // Create a JWT token
-    const token = createToken({ userCin: user.cin, firstName: user.first_name, lastName: user.last_name });
+    const token = createToken({
+      userId: user.user_id,
+      userCin: user.cin,
+      firstName: user.first_name,
+      lastName: user.last_name,
+    });
 
     // Set the token in a cookie
     setCookie(res, "authToken", token);
+
+    console.log("login", );
     // If the email and password are valid, return a success message or user data
     return res.status(200).json({ message: "Login successful", user });
   } catch (error) {

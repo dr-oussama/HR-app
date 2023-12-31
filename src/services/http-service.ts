@@ -18,6 +18,15 @@ class HttpService {
     return { request, cancel: () => controller.abort() };
   }
 
+  getById<T>(id: number) {
+    const controller = new AbortController();
+    const request = apiClient.get<T[]>(this.endpoint, {
+      params: {id},
+      signal: controller.signal,
+    });
+    return { request, cancel: () => controller.abort() };
+  }
+
   getOne<T>(id: number) {
     const controller = new AbortController();
     const request = apiClient.get<T>(this.endpoint + "/" + id, {

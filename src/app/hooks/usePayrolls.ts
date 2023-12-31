@@ -2,7 +2,7 @@ import { CanceledError } from "@/services/api-client";
 import userService, { Payroll } from "@/services/payroll-service";
 import { useState, useEffect } from "react";
 
-const useUsers = () => {
+const usePayrolls = () => {
   const [error, setError] = useState("");
   const [payrolls, setPayrolls] = useState<Payroll[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -88,4 +88,4 @@ export const getOneUser = async (userId: number): Promise<Payroll> => {
   }
 };
 
-export default useUsers;
+export default usePayrolls;

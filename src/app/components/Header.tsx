@@ -1,7 +1,32 @@
+import { useEffect, useState } from "react";
+
 const Header = () => {
-  const user = localStorage.getItem("user")
-  if(!user) return;
-  const adminName = JSON.parse(user)["last_name"]+" "+JSON.parse(user)["first_name"];
+  //const user = localStorage.getItem("user");
+  const [cin, setCin] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  useEffect(() => {
+    getToken();
+  }, []);
+
+  const getToken = async () => {
+    try {
+      const response = await fetch("/api/getToken", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const result = await response.json();
+      const { userCin, lastName, firstName } = result;
+      setFirstName(firstName);
+      setLastName(lastName);
+      setCin(userCin);
+    } catch (error) {
+      console.log("An error occurred getToken. Please try again later.");
+    }
+  };
+  const adminName = firstName + " " + lastName;
   const adminAvatarUrl = "luffy5.jpg";
 
   return (

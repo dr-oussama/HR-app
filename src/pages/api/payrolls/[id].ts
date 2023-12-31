@@ -7,10 +7,34 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === "PATCH") {
+  if (req.method === "GET") {
     try {
-      const { payroll_id, pay_period_start, pay_period_end, bonuses, deductions } =
-        req.body;
+      const {
+        id
+      } = req.headers;
+
+      const payrolls = await prisma.payroll.findMany({
+        where: {
+          user_id: Number(id),
+        },
+      });
+      try {
+        return res.status(200).json(payrolls);
+      } catch (error) {
+        return res.status(500).json({ error: "Error fetching payrolls" });
+      }
+    } catch (error) {
+      return res.status(500).json({ error: "Error here updating payroll" });
+    }
+  } else if (req.method === "PATCH") {
+    try {
+      const {
+        payroll_id,
+        pay_period_start,
+        pay_period_end,
+        bonuses,
+        deductions,
+      } = req.body;
       const date_start = new Date(pay_period_start);
       const date_end = new Date(pay_period_end);
 
